@@ -1,0 +1,40 @@
+enable
+configure terminal
+hostname RT-01
+banner motd "acesso apenas para pessoas autorizadas"
+enable secret SenhadaEnable
+service password-encryption
+ip domain-name rede1.local
+crypto key generate rsa general-keys modulus 1024
+username FabricioGomes privilege 15 secret Gomes
+username AlexFaria  privilege 15 secret Faria
+username ThomazRissi privilege 15 secret Rissi
+line console 0
+password ConsoleArryn
+login
+exit
+line vty 0 15
+transport input ssh
+exec-timeout 5
+login local
+exit
+interface gigabitethernet0/1
+ip address 172.16.1.129 255.255.255.240
+description interface de gerenciamento
+no shutdown
+exit
+interface gigabitethernet 0/1.20
+encapsulation dot1q 20
+ip address 172.16.0.1 255.255.255.0
+description interface vlan 20
+exit
+interface gigabitethernet 0/1.10
+encapsulation dot1q 10
+ip address 172.16.1.1 255.255.255.192
+description interface vlan 10
+exit
+interface gigabitethernet0/1.100
+encapsulation dot1q 100
+ip address 172.16.1.133 255.255.255.240
+description dispositivo srv
+exit

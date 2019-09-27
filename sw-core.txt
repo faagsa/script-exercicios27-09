@@ -1,0 +1,56 @@
+enable
+configure terminal
+hostname SW-CORE
+banner motd "acesso apenas para pessoas autorizadas"
+enable secret SenhadaEnable
+service password-encryption
+ip domain-name redeSW12.local
+crypto key generate rsa general-keys modulus 1024
+username FabricioGomes privilege 15 secret Gomes
+username AlexFaria  privilege 15 secret Faria
+username ThomazRissi privilege 15 secret Rissi
+line console 0
+password SenhadaConsole
+login
+exit
+line vty 0 15
+transport input ssh
+exec-timeout 5
+login local
+exit
+interface vlan 100
+ip address 172.16.1.142 255.255.255.240
+description interface de gerenciamento
+no shutdown
+exit
+ip default-gateway 172.16.1.129
+exit
+vlan 100
+name DISPOSITIVOS
+exit
+interface fastethernet3/1
+switchport mode access
+switchport access vlan 100
+description CONEXAO COM SERVER-01
+exit
+interface g0/1
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,100,99
+description conexao vlans
+no shutdown
+exit
+interface g1/1
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,100,99
+description conexao vlans
+no shutdown
+exit
+interface g2/1
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,100,99
+description conexao vlans
+no shutdown
+exit
